@@ -22,25 +22,27 @@
 
 ## 站点结构
 
-- 根目录页面
+- public/（静态页面）
     - `index2.html` — 首页
     - `yinzi.html`  — 引子（自我介绍 + 留言表单）
     - `wenji_.html` — 砚山集（文章目录 / 文章列表页）
     - `tusu_.html`  — 镜月志（摄影时间轴 / 相册索引）
     - `leyin_.html` — 松风谱（音乐墙 / 专辑展示）
-    - `mood.html`   — 足迹（基于个人数据的ai大模型对话）
-    - `frame_lowkey.html` — 框架演示页（作业要求演示）
+    - `frame_lowkey.html` — 框架演示页
+    - `screenshots` -（演示截图）
+    - my-chat-ai
+     - node_modules
+     - `mood.html` -足迹（基于个人数据的ai大模型对话）
 
-- 页面截图
-    - `screenshots/` — 预览截图文件夹（包含各页面截图）
+- api/（vercel托管页面）
+   - my-chat-ai（Vercel Serverless Function）
+     - `index.js` - 中转文件
+     - `package.json`
+     - `package-lock.json`
 
-- 内页（inner页面）
-    - 单曲页（唱片详情）、单篇文章详情、单张摄影单页等  
+- vercel.json -路由配置
+- readme.md
 
-- my-ai-chat（大模型配置文件）
-    - .env（api key）  
-    - `mood.html`（大模型交互页面）
-    - server.js（中转接口）
 ---
 
 ## 作业要求对照表

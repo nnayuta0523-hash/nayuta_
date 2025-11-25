@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>足迹 · 观山月</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      background:#000;color:#fff;
+      font-family:"Noto Serif SC",serif;
+      line-height:2;min-height:100vh;
+      display:flex;flex-direction:column;
+    }
+
+   
+    .site-header{
+      height:60px;background:#000;border-bottom:1px solid #222;
+      position:sticky;top:0;z-index:100;
+    }
+    .nav-inner{
+      display:flex;align-items:center;justify-content:space-between;
+      height:100%;max-width:960px;margin:0 auto;padding:0 20px;
+    }
+    .site-name{font-size:1.3rem;font-weight:bold;color:#fff;text-decoration:none;}
+    .site-nav{display:flex;gap:30px;}
+    .nav-icon{color:#fff;text-decoration:none;font-size:1.1rem;transition:opacity .2s;}
+    .nav-icon:hover{opacity:0.7;}
+    .dropdown{position:relative;}
+    .dropdown-menu{
+      display:none;position:absolute;top:100%;left:0;
+      background:#000;border:1px solid #222;border-top:none;min-width:100px;
+    }
+    .dropdown-menu a{display:block;padding:8px 16px;color:#fff;text-decoration:none;font-size:0.95rem;}
+    .dropdown-menu a:hover{background:#222;}
+    .dropdown:hover .dropdown-menu{display:block;}
+
+    
+    .page-title{
+      text-align:center;padding:80px 0 60px;
+      font-family:"Dancing Script",cursive;font-size:3rem;letter-spacing:2px;
+    }
+
+   
+    .tools{
+      position:fixed;top:80px;right:20px;display:flex;gap:12px;z-index:99;
+    }
+    .tools button{
+      background:rgba(255,255,255,0.08);border:1px solid #333;
+      color:#999;padding:8px 14px;font-size:0.9rem;cursor:pointer;
+    }
+    .tools button:hover{background:#222;color:#fff;}
+
+    
+    #chat{
+      flex:1;max-width:960px;width:100%;margin:0 auto;
+      padding:80px 40px 140px;overflow-y:auto;
+      display:flex;flex-direction:column;gap:60px;
+    }
+   
+.message{
+  max-width:640px;         
+  width:fit-content;
+  padding:0;                 
+  background:none !important;  
+  border:none !important;     
+  box-shadow:none !important;
+  font-size:1.1rem;
+  line-height:1.6;           
+  letter-spacing:0.8px;      
+  position:relative;
+}
+
+
+.user{
+  align-self:flex-end;
+  margin-left:auto;
+  color:#ccc;               
+}
+
+
+.ai{
+  align-self:flex-start;
+  margin-right:auto;
+  color:#fff;               
+}
+
+
+.copy-btn{
+  position:absolute;
+  right:-40px;             
+  top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,0.05);
+  color:#555;font-size:0.75rem;
+  padding:2px 6px;opacity:0;
+}
+.message:hover .copy-btn{opacity:1;}
+
+    
+    .input-area{
+      position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+      padding:24px 20px;background:#000;border-top:1px solid #222;
+      max-width:960px;width:100%;display:flex;gap:16px;box-sizing:border-box;
+    }
+    #input{
+      flex:1;padding:16px 20px;background:#111;border:1px solid #333;
+      color:#fff;font-family:"Noto Serif SC",serif;font-size:1rem;
+      height:56px;resize:none;
+    }
+    #input::placeholder{color:#444;}
+    button{
+      padding:0 32px;background:#222;border:1px solid #333;
+      color:#999;font-size:1rem;cursor:pointer;transition:all .2s;
+    }
+    button:hover{background:#333;color:#fff;}
+
+    .loading::after{content:"......";opacity:0.5;font-size:0.9em;}
+  </style>
+</head>
+<body>
+
+  <!-- 导航栏 -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <a href="../index2.html" class="site-name">观山月</a>
+      <nav class="site-nav">
+        <div class="dropdown">
+          <a href="../index2.html" class="nav-icon">序章</a>
+          <ul class="dropdown-menu">
+            <li><a href="../frame_lowkey.html" target="_blank">引子</a></li>
+            <li><a href="./mood.html">足迹</a></li>
+          </ul>
+        </div>
+        <div class="dropdown"><a href="../wenji_.html" class="nav-icon">砚山集</a></div>
+        <div class="dropdown"><a href="../tusu_.html" class="nav-icon">镜月志</a></div>
+        <div class="dropdown"><a href="../leyin_.html" class="nav-icon">松风谱</a></div>
+      </nav>
+    </div>
+  </header>
+
+  <h1 class="page-title">与月对话</h1>
+
+  <div class="tools">
+    <button onclick="if(confirm('清空全部记录？')){chat.innerHTML='';messages=[]}">清空</button>
+  </div>
+
+  <div id="chat"></div>
+
+  <div class="input-area">
+    <input type="text" id="input" placeholder="在此刻，与山月说点什么……" autocomplete="off">
+    <button onclick="send()">发送</button>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:3000/v1/chat/completions';
+    let messages = [];
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('input');
+
+    function addMessage(content, role){
+      const div = document.createElement('div');
+      div.className = `message ${role}`;
+      div.innerHTML = content
+        .replace(/\n/g, '<br>')
+        .replace(/ /g, '&nbsp;') +
+        (role==='ai' ? `<button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentNode.textContent.trim())">复制</button>` : '');
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    async function send(){
+      const q = input.value.trim();
+      if(!q) return;
+      addMessage(q,'user');
+      input.value='';
+
+      const aiDiv = document.createElement('div');
+      aiDiv.className='message ai loading';
+      aiDiv.textContent='山月沉思';
+      chat.appendChild(aiDiv);
+
+      messages.push({role:"user",content:q});
+
+      try{
+        const resp = await fetch(API_URL,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            model:"deepseek-ai/DeepSeek-V3",
+            messages:messages,
+            stream:true
+          })
+        });
+
+        const reader = resp.body.getReader();
+        const decoder = new TextDecoder();
+        let answer = '';
+        aiDiv.classList.remove('loading');
+        aiDiv.textContent='';
+
+        while(true){
+          const {done,value} = await reader.read();
+          if(done) break;
+          const chunk = decoder.decode(value);
+          const lines = chunk.split('\n');
+          for(const line of lines){
+            if(line.startsWith('data: ') && !line.includes('[DONE]')){
+              try{
+                const json = JSON.parse(line.slice(6));
+                const delta = json.choices[0]?.delta?.content || '';
+                answer += delta;
+                aiDiv.innerHTML = answer.replace(/\n/g,'<br>').replace(/ /g,'&nbsp;') +
+                  `<button class="copy-btn" onclick="navigator.clipboard.writeText('${answer.replace(/'/g,"\\'").replace(/&nbsp;/g,' ')}')">复制</button>`;
+                chat.scrollTop = chat.scrollHeight;
+              }catch(e){}
+            }
+          }
+        }
+        messages.push({role:"assistant",content:answer});
+      }catch(err){
+        aiDiv.textContent = '山月隐去了踪迹：'+err.message;
+      }
+    }
+
+    input.addEventListener('keypress',e=>e.key==='Enter'&&send());
+  </script>
+</body>
+</html>

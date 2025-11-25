@@ -10,11 +10,11 @@
 
 ## 网站预览
 
-![首页](./public/screenshot/index.png)
-![松风谱-黑胶唱片页](./public/screenshot/leyin.png)
-![砚山集-文章详情](./public/screenshot/wenji.png)
-![镜月志-猫咪专栏](./public/screenshot/tusu.png)
-![足迹-ai大模型](./public/screenshot/zuji.png)
+![首页](https://raw.githubusercontent.com/nnayuta0523-hash/Unnamed_Site_3/main/public/screenshot/index.png)
+![砚山集-文章详情](https://raw.githubusercontent.com/nnayuta0523-hash/Unnamed_Site_3/main/public/screenshot/wenji.png)
+![镜月志-猫咪专栏](https://raw.githubusercontent.com/nnayuta0523-hash/Unnamed_Site_3/main/public/screenshot/tusu.png)
+![松风谱-黑椒唱片](https://raw.githubusercontent.com/nnayuta0523-hash/Unnamed_Site_3/main/public/screenshot/leyin.png)
+![足迹-ai大模型](https://raw.githubusercontent.com/nnayuta0523-hash/Unnamed_Site_3/main/public/screenshot/zuji.png)
 
 > （若图片未能正常显示，请打开子文件夹screenshots进行查看）
 

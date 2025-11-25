@@ -1,18 +1,11 @@
 {
-  "rewrites": [
-    {
-      "source": "/my-ai-chat/(.*)",
-      "destination": "/api/my-ai-chat"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/public/$1"
-    }
-  ],
+  "version": 2,
   "functions": {
     "api/my-ai-chat/index.js": {
       "memory": 2048,
       "maxDuration": 30
     }
   }
+}
+
 }

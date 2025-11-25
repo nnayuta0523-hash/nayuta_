@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>观山月</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      background: #000; 
+      color: #fff; 
+      font-family: "Noto Serif SC", serif; 
+      min-height: 100vh;
+      overflow-y: auto;
+    }
+
+    /* 顶部图片 */
+    .hero-section {
+      position: relative;
+      height: 40vh; 
+      overflow: hidden;
+    }
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%; 
+      filter: brightness(0.75);
+    }
+    .hero-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 2;
+      font-family: "Dancing Script", cursive;
+      font-size: 3.2rem;
+      color: #fff;
+      text-shadow: 
+        0 0 20px rgba(0,0,0,0.9),
+        0 0 40px rgba(0,0,0,0.7);
+      letter-spacing: 3px;
+      white-space: nowrap;
+    }
+
+    /* 内容区域 */
+    .main-content {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 60px 30px 100px;
+    }
+    .main-content h1 {
+      font-family: "Dancing Script", cursive;
+      font-size: 2.8rem;
+      text-align: center;
+      margin-bottom: 40px;
+      color: #fff;
+    }
+    .main-content p {
+      font-size: 1.15rem;
+      line-height: 1.8; 
+      color: #ddd;
+      text-align: justify;
+      text-indent: 2em; 
+      margin-bottom: 1.8rem;
+    }
+    .main-content p:first-of-type {
+      text-indent: 0;
+      text-align: center;
+      font-size: 1.25rem;
+      color: #fff;
+      margin-bottom: 40px;
+    }
+
+    .contact-card {
+      max-width: 700px; 
+      margin: 80px auto 60px;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 0;
+      padding: 28px; 
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    }
+    .contact-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #333;
+    }
+    .contact-title {
+      font-size: 1.05rem;
+      color: #aaa;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .contact-title::before {
+      content: "W";
+      font-weight: bold;
+      color: #666;
+    }
+    .contact-nickname {
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 16px; 
+    }
+    .form-row {
+      display: flex;
+      gap: 16px;
+    }
+    .form-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .form-group label {
+      margin-bottom: 6px;
+      color: #ccc;
+      font-size: 0.93rem;
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 10px;
+      font-family: "Noto Serif SC", serif;
+      font-size: 0.98rem;
+      width: 100%;
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: #666;
+    }
+    .form-group textarea {
+      min-height: 100px; 
+      resize: vertical;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .radio-group, .checkbox-group {
+      display: flex;
+      gap: 24px; 
+      flex-wrap: wrap; 
+      margin-top: 8px;
+    }
+    .radio-group label, .checkbox-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px; 
+      color: #ddd;
+      font-size: 0.93rem;
+      white-space: nowrap; 
+      cursor: pointer;
+    }
+    .radio-group input[type="radio"],
+    .checkbox-group input[type="checkbox"] {
+      width: auto; 
+      height: auto;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid #333;
+    }
+    .form-buttons {
+      display: flex;
+      gap: 12px;
+    }
+    .form-buttons button {
+      padding: 9px 18px;
+      background: #333;
+      border: 1px solid #444;
+      color: #fff;
+      font-size: 0.93rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .form-buttons button:hover {
+      background: #444;
+    }
+    .form-buttons button[type="reset"] {
+      background: #222;
+    }
+    .form-status {
+      color: #888;
+      font-size: 0.88rem;
+    }
+
+    .icon-group {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+    .icon-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.78rem;
+    }
+    .icon-item::before {
+      font-size: 1.3rem;
+      opacity: 0.7;
+    }
+    .icon-smile::before { content: "微笑"; }
+    .icon-clip::before { content: "附件"; }
+    .icon-font::before { content: "F"; font-weight: bold; }
+    .icon-minus::before { content: "−"; }
+
+    .divider {
+      flex: 1;
+      height: 1px;
+      background: #333;
+      margin: 0 16px;
+    }
+
+    /* 响应式 */
+    @media (max-width: 768px) {
+      .hero-section { height: 50vh; }
+      .hero-text { font-size: 2.3rem; }
+      .main-content { padding: 50px 20px; }
+      .contact-card { margin: 50px 20px; padding: 22px; }
+      .form-row { flex-direction: column; }
+      .bottom-icons { flex-direction: column; gap: 12px; padding: 16px; }
+      .divider { display: none; }
+    }
+
+    /* 添加米娅图片样式 */
+    .mia-image {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部图片 -->
+  <section class="hero-section">
+    <img src="4.png" alt="观山月" class="hero-img"  onerror="this.src='https://via.placeholder.com/1920x600/111/fff?text=观山月'">
+    <div class="hero-text">关山难越观山月，观尽山月越关山</div>
+  </section>
+
+
+  <!-- 正文内容 -->
+  <article class="main-content">
+    <h1>观山月</h1>
+    <p>我已经很久不写诗了，也懒得提笔写一些矫情、酸涩的文字等。</p>
+    <p>经常有人和我说，"生活太难了"。</p>
+    <p>十几岁的时候，总爱在历史课本上勾画战争与革命，那时候总觉得，历史是辉煌的、宏大的、轰轰烈烈的。</p>
+    <p>进入大学，坐在教室里。</p>
+    <p>开始实习，坐在工位上，</p>
+    <p>我忽然明白，自己是个普通人，自己不过是芝麻大小的一粒。</p>
+    <p>&nbsp;挣扎与无力。</p>
+    <p>于是，我开始讨厌悬在半空的讨论，这些话题如同精致的智力游戏，却与我们的日常生活隔着厚厚的玻璃。当思想在云端盘旋，双脚便失去感知大地的能力。我依然喜欢历史，但不再关心谁夺取了政权，谁打赢了战争。我不再仰望那些遥不可及的东西。</p>
+    <p>在个体命运的裂隙中，在具体生命的褶皱中，</p>
+    <p>记录文字的呢喃、图片的定格与音乐的回响。它们来自生活中细碎的瞬间，山风与月亮。</p>
+    <p>于是，这个网页诞生了——观山月。</p>
+    <p>伴你我越过关山，寻得内心的宁静。</p>
+
+    <!-- 表单卡片 -->
+    <div class="contact-card">
+      <div class="contact-header">
+        <div class="contact-title">一起记录</div>
+        <div class="contact-nickname">观山月</div>
+      </div>
+
+      <form class="contact-form" action="#" method="post">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">昵称</label>
+            <input type="text" id="name" name="name" placeholder="您的昵称">
+          </div>
+          <div class="form-group">
+            <label for="email">邮箱</label>
+            <input type="email" id="email" name="email" placeholder="name@example.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="message">留言内容</label>
+          <textarea id="message" name="message" placeholder="在此写下您想对 nayuta 说的话…"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="file">附件（可选）</label>
+          <input type="file" id="file" name="file">
+        </div>
+
+        <div class="form-actions">
+          <div class="form-buttons">
+            <button type="submit">发送留言</button>
+            <button type="reset">清空重填</button>
+          </div>
+          <div class="form-status">未发送</div>
+        </div>
+      </form>
+    </div>
+  </article>
+
+</body>
+</html>
+
+

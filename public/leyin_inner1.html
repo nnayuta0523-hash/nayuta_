@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>山春一曲，少年心事 · 乐吟</title>
+
+  
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: "Noto Serif SC", serif;
+      line-height: 2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* 导航栏 */
+    .site-header {
+      height: 60px;
+      background: #000;
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      width: 90%;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .site-name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #fff;
+      text-decoration: none;
+    }
+    .site-nav {
+      display: flex;
+      gap: 30px;
+    }
+    .site-nav .nav-icon {
+      font-size: 1.1rem;
+      color: #fff;
+      text-decoration: none;
+      padding: 0 10px;
+      transition: opacity 0.2s;
+    }
+    .site-nav .nav-icon:hover { opacity: 0.7; }
+
+    /* 下拉菜单 */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #000;
+      list-style: none;
+      padding: 8px 0;
+      margin: 0;
+      min-width: 100px;
+      border: 1px solid #222;
+      border-top: none;
+      z-index: 100;
+    }
+    .dropdown-menu li a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      font-size: 0.95rem;
+    }
+    .dropdown-menu li a:hover { background: #222; }
+    .dropdown:hover .dropdown-menu { display: block; }
+
+    
+    .author-info {
+      padding: 80px 0 40px;
+      text-align: center;
+    }
+    .author-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1px;
+      border: 2px solid #333;
+    }
+    .author-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+      padding-top: 80px; 
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 60px;
+      flex: 1;
+    }
+
+    
+    .player-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 360px;
+      flex-shrink: 0;
+    }
+
+    /* 黑胶唱片容器 */
+    .vinyl-container {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin-bottom: 30px;
+      perspective: 1000px;
+    }
+
+   
+    .vinyl {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%, #0a0a0a 0%, #000 50%, #0f0f0f 100%);
+      position: relative;
+      box-shadow: 
+        0 0 40px rgba(0, 128, 255, 0.3),
+        0 0 80px rgba(255, 255, 255, 0.1),
+        inset 0 0 100px rgba(0, 0, 0, 0.7);
+      border: 2px solid rgba(0, 255, 255, 0.2);
+      animation: rotate 20s linear infinite paused;
+      transition: box-shadow 0.5s;
+    }
+    .vinyl::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 60px;
+      height: 60px;
+      background: #222;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+      z-index: 2;
+    }
+    .vinyl::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+    }
+
+    
+    .vinyl-container::before, .vinyl-container::after,
+    .vinyl-container > span::before, .vinyl-container > span::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 12px solid rgba(255, 255, 255, 0.4); /* 白色倒三角 */
+      opacity: 0.7;
+      z-index: -1;
+    }
+    .vinyl-container::before { top: -20px; left: 50%; transform: translateX(-50%); }
+    .vinyl-container::after { bottom: -20px; left: 50%; transform: translateX(-50%) rotate(180deg); }
+    .vinyl-container > span::before { left: -20px; top: 50%; transform: translateY(-50%) rotate(-90deg); }
+    .vinyl-container > span::after { right: -20px; top: 50%; transform: translateY(-50%) rotate(90deg); }
+
+   
+    .album-cover {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+      box-shadow: 0 0 20px rgba(0,0,0,0.7);
+    }
+
+    /* 唱针 */
+    .tonearm {
+      position: absolute;
+      top: -50px;
+      right: -60px;
+      width: 10px;
+      height: 240px;
+      background: linear-gradient(to bottom, #666 0%, #aaa 100%);
+      border-radius: 5px 5px 0 0;
+      transform-origin: bottom right;
+      transform: rotate(-30deg);
+      transition: transform 1s cubic-bezier(0.25, 0.8, 0.25, 1);
+      z-index: 4;
+      box-shadow: 2px 2px 10px rgba(255,255,255,0.2);
+    }
+    .tonearm::before {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      right: -5px;
+      width: 20px;
+      height: 20px;
+      background: #888;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    
+    .playing .vinyl {
+      animation-play-state: running;
+    }
+    .playing .tonearm {
+      transform: rotate(20deg);
+    }
+
+.controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+.ctrl-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-family: "Noto Serif SC", serif;   
+  font-size: 1.1rem;                     
+  font-weight: 400;
+  cursor: pointer;
+  transition: none;                     
+  padding: 8px 16px;
+  letter-spacing: 1px;
+}
+
+
+    
+    .text-right {
+      flex: 1;
+      color: #ddd;
+      font-size: 1.1rem;
+      line-height: 2.2;
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; 
+      align-items: center;     
+      text-align: center;      
+      max-width: 500px;
+    }
+    .text-right p,
+    .text-right blockquote {
+      width: 80%;              
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    .text-right blockquote {
+      margin: 1.5rem auto;
+      padding-left: 1.5rem;
+      border-left: 3px solid #444;
+      color: #bbb;
+      font-style: italic;
+    }
+
+   
+    .post-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px solid #333;
+      font-size: 1rem;
+      width: 100%;
+    }
+    .post-nav a {
+      color: #999;
+      text-decoration: none;
+      max-width: 45%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .post-nav a:hover { color: #fff; }
+    .post-nav .prev { text-align: left; }
+    .post-nav .next { text-align: right; }
+
+    
+    .site-footer {
+      padding: 30px 0;
+      text-align: center;
+      color: #555;
+      font-size: 0.85rem;
+      border-top: 1px solid #222;
+    }
+
+    
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+   
+    @media (max-width: 768px) {
+      .main-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+      }
+      .player-left {
+        width: 100%;
+        max-width: 320px;
+      }
+      .text-right {
+        text-align: center;
+        padding: 0 15px;
+      }
+      .vinyl-container { width: 260px; height: 260px; }
+      .album-cover { width: 140px; height: 140px; }
+      .controls { gap: 15px; }
+      .ctrl-btn { width: 44px; height: 44px; font-size: 1.4rem; }
+      .post-nav { flex-direction: column; gap: 12px; text-align: center; }
+      .post-nav a { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 导航栏 -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <a href="index2.html" class="site-name">观山月</a>
+      <nav class="site-nav">
+        <div class="dropdown">
+          <a href="#" class="nav-icon">序章</a>
+          <ul class="dropdown-menu">
+            <li><a <li><a href="frame_lowkey.html" target="_blank">引子</a></li></a></li>
+            <li><a href="my-ai-chat/mood.html">足迹</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <a href="wenji_.html" class="nav-icon">砚山集</a>
+        </div>
+        <div class="dropdown">
+          <a href="tusu_.html" class="nav-icon">镜月志</a>
+        </div>
+        <div class="dropdown">
+          <a href="leyin_.html" class="nav-icon">松风谱</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 主内容包装器 -->
+  <div class="content-wrapper">
+
+    <div class="main-content" id="player">
+
+      
+      <div class="player-left">
+        <div class="vinyl-container">
+          <span></span>
+          <div class="vinyl" id="vinyl">
+            <img src="10.jpg" alt="专辑封面" class="album-cover" onerror="this.style.display='none'">
+          </div>
+          <div class="tonearm" id="tonearm"></div>
+        </div>
+
+        <div class="controls">
+          <button class="ctrl-btn play" id="play-btn">一起来听一下吧！</button>
+        </div>
+      </div>
+
+      
+      <div class="text-right">
+        <h2><strong>山春 - 陈嘉俊是这个嘉</strong></h2>
+<p>九月和同学一起在图书馆学习，突然在耳机里听到这首歌。</p>
+<p>累，一种由内向外散发的累，包裹着我们。</p>
+		<p>“我们去东园看看那只小猫吧！”</p>
+		<p>“那走吧！”</p>
+        <blockquote>
+          于是我们趁夜走一回。<br>
+          以山落座，以春泼墨。<br>
+        </blockquote>
+      </div>
+
+    </div>
+
+   
+    <nav class="post-nav">
+      <a href="leyin_inner2.html" class="prev">上一首：海鸥不回来</a>
+      <a href="leyin_.html" class="next">返回目录</a>
+    </nav>
+
+  </div>
+
+ 
+  <audio id="audio" preload="auto">
+    <source src="山春.mp3" type="audio/mpeg">
+    您的浏览器不支持音频播放。
+  </audio>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    Copyright 2025 观山月 · 文字、图片、音乐，皆为心影
+  </footer>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('play-btn');
+    const vinyl = document.getElementById('vinyl');
+    const tonearm = document.getElementById('tonearm');
+    const player = document.getElementById('player');
+
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        player.classList.add('playing');
+        playBtn.innerHTML = 'Pause';
+      } else {
+        audio.pause();
+        player.classList.remove('playing');
+        playBtn.innerHTML = 'Play';
+      }
+    });
+
+    audio.addEventListener('ended', () => {
+      player.classList.remove('playing');
+      playBtn.innerHTML = 'Play';
+    });
+
+    vinyl.addEventListener('click', () => playBtn.click());
+  </script>
+
+</body>
+</html>

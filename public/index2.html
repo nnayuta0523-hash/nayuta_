@@ -1,0 +1,349 @@
+ <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nayuta</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: "Noto Serif SC", serif;
+  line-height: 1.6;
+}
+
+.container {
+  width: 90%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/*导航栏*/
+.site-header {
+  height: 60px;
+  background: #000;
+  border-bottom: 1px solid #222;
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;   
+  height: 100%;
+}
+.site-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #fff;
+}
+.site-nav {
+  display: flex;
+  gap: 40px;      
+}
+.site-nav .nav-icon {
+  font-size: 1.2rem;    
+  color: #fff;
+  text-decoration: none;
+  padding: 0 12px;       
+  position: relative;
+}
+
+.nav-icon::after {
+  content: attr(data-title);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.nav-icon:hover::after,
+.nav-icon:focus::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(4px);
+}
+
+/*标语区域*/
+.hero {
+  padding: 80px 0 40px;
+  text-align: center;
+}
+
+.hero-slogan {
+  font-family: "Dancing Script", cursive;
+  font-size: 3rem;
+  color: #fff;
+}
+
+/* 自我介绍*/
+.intro {
+  padding: 40px 0;
+}
+
+.intro-inner {
+  display: flex;               
+  align-items: center;        
+  gap: 30px;                   
+}
+
+.intro-avatar img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: block;
+}
+
+.intro-text {
+  flex: 1;                     
+}
+
+.intro-text h2 {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+}
+
+.intro-text p {
+  font-size: 1rem;
+  color: #ddd;
+}
+
+.divider {
+  width: 200px;
+  height: 1px;
+  background: #fff; 
+  margin: 40px auto;
+}
+
+/*最新文章+最新影像*/
+.content-blocks {
+  display: flex;
+  gap: 40px;
+  padding: 40px 0;
+}
+
+.latest-posts,
+.recent-images {
+  flex: 1;
+}
+
+.latest-posts h3,
+.recent-images h3 {
+  font-size: 1.4rem;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #222;
+  padding-bottom: 8px;
+  color: #fff;
+}
+
+.latest-posts ul {
+  list-style: none;
+}
+
+.latest-posts li {
+  margin-bottom: 12px;
+}
+
+.article-list .list-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.list-number,
+.list-bullet {
+  width: 20px;
+  color: #fff;  
+  margin-right: 8px;
+  font-size: 1rem;
+}
+
+.article-title {
+  flex: 1;
+  color: #fff;
+  text-decoration: none;
+}
+
+.article-title:hover {
+  text-decoration: underline;
+}
+
+.date {
+  color: #777;
+  font-size: 0.85rem;
+  margin-left: 12px;
+}
+
+/* 影像部分 */
+.recent-images .image-grid {
+  display: flex;          
+  gap: 16px;              
+  overflow-x: auto;        
+  padding-bottom: 10px;   
+}
+.recent-images .image-grid img {
+  width: auto;             
+  height: 120px;          
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .intro-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .intro-text {
+    margin-top: 20px;
+  }
+  .content-blocks {
+    flex-direction: column;
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: #000;       
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 90px;
+  border-top: 1px solid #222;
+  z-index: 100;
+}
+
+.dropdown-menu li a {
+  display: block;
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 12px;
+  font-size: 1rem;
+}
+
+.dropdown-menu li a:hover {
+  background: #222;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* 页脚 */
+.site-footer {
+  padding: 20px 0;
+  text-align: center;
+  color: #777;
+  font-size: 0.85rem;
+}
+  </style>
+</head>
+<body>
+<header class="site-header">
+    <div class="nav-inner">
+      <a href="index2.html" class="site-name">观山月</a>
+      <nav class="site-nav">
+        <div class="dropdown">
+          <a href="#" class="nav-icon">序章</a>
+          <ul class="dropdown-menu">
+            <li><a <li><a href="frame_lowkey.html" target="_blank">引子</a></li></a></li>
+            <li><a href="my-ai-chat/mood.html">足迹</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <a href="wenji_.html" class="nav-icon">砚山集</a>
+        </div>
+        <div class="dropdown">
+          <a href="tusu_.html" class="nav-icon">镜月志</a>
+        </div>
+        <div class="dropdown">
+          <a href="leyin_.html" class="nav-icon">松风谱</a>
+        </div>
+      </nav>
+    </div>
+</header>
+
+
+<main class="site-main">
+  <section class="hero">
+    <h1 class="hero-slogan">循此苦旅，以达天际</h1>
+  </section>
+
+  <!-- 自我介绍 -->
+  <section class="intro">
+    <div class="intro-inner container">
+      <div class="intro-avatar">
+        <img src="avator.jpg" alt="头像">
+      </div>
+      <div class="intro-text">
+        <h2>你好，我是nayuta!</h2>
+        <p>自己总是在遗忘，所以选择记录。</p>
+        <p>记录的形式也是阴晴不定的，可能是一段简短的文字，也可能是我随手拍下的一张图片，当然也可能只是一首歌。</p>
+      </div>
+    </div>
+  </section>
+
+  
+  <div class="divider"></div>
+  <section class="content-blocks container">
+    <div class="latest-posts">
+      <h3>最新文章</h3>
+<ul class="article-list">
+  <li class="list-item numbered">
+    <span class="list-number">·</span>
+    <a href="wenji_inner1.html" class="article-title">风</a>
+    <span class="date">2025-10-22</span>
+  </li>
+  <li class="list-item bulleted">
+    <span class="list-bullet">·</span>
+    <a href="wenji_inner2.html" class="article-title">平静、有秩序地活着</a>
+    <span class="date">2025-10-20</span>
+  </li>
+  <li class="list-item numbered">
+    <span class="list-number">·</span>
+    <a href="wenji_inner3.html" class="article-title">于是自己开始记录</a>
+    <span class="date">2025-10-18</span>
+  </li>
+</ul>
+    </div>
+    <div class="recent-images">
+      <h3>近期影像</h3>
+      <div class="image-grid">
+        <img src="9.jpg" alt="影像1">
+        <img src="8.jpg" alt="影像2">
+        <img src="7.jpg" alt="影像3">
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    &copy; 2025 保留所有权利。
+  </div>
+</footer>
+</body>
+</html>

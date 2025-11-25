@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>平静、有秩序地活着 · 观山月</title>
+
+  <!-- 字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: "Noto Serif SC", serif;
+      line-height: 2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 导航栏 */
+    .site-header {
+      height: 60px;
+      background: #000;
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      width: 90%;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .site-name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #fff;
+      text-decoration: none;
+    }
+    .site-nav {
+      display: flex;
+      gap: 30px;
+    }
+    .site-nav .nav-icon {
+      font-size: 1.1rem;
+      color: #fff;
+      text-decoration: none;
+      padding: 0 10px;
+      transition: opacity 0.2s;
+    }
+    .site-nav .nav-icon:hover { opacity: 0.7; }
+
+    /* 下拉菜单 */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #000;
+      list-style: none;
+      padding: 8px 0;
+      margin: 0;
+      min-width: 100px;
+      border: 1px solid #222;
+      border-top: none;
+      z-index: 100;
+    }
+    .dropdown-menu li a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+    .dropdown-menu li a:hover { background: #222; }
+    .dropdown:hover .dropdown-menu { display: block; }
+
+    /* 个人头像 + 名字区域（替换标语） */
+    .author-info {
+      padding: 80px 0 40px;
+      text-align: center;
+    }
+    .author-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1px;
+      border: 2px solid #333;
+    }
+    .author-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    /* 文章内容 */
+    .post-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px 60px;
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .post-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .post-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    .post-date {
+      font-size: 1rem;
+      color: #aaa;
+      letter-spacing: 1.5px;
+    }
+    .post-body {
+      font-size: 1.1rem;
+      color: #ddd;
+      text-align: left;
+      line-height: 2.2;
+      width: 100%;
+    }
+    .post-body p {
+      margin-bottom: 1.8rem;
+    }
+    .post-body img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 2rem 0;
+      display: block;
+    }
+    .post-body audio {
+      width: 100%;
+      margin: 2rem 0;
+      filter: invert(1);
+    }
+    .post-body blockquote {
+      border-left: 3px solid #444;
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+      color: #bbb;
+      font-style: italic;
+    }
+
+    /* 上一篇 / 下一篇 */
+    .post-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px solid #333;
+      width: 100%;
+      font-size: 1rem;
+    }
+    .post-nav a {
+      color: #999;
+      text-decoration: none;
+      max-width: 45%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .post-nav a:hover {
+      color: #fff;
+    }
+    .post-nav .prev { text-align: left; }
+    .post-nav .next { text-align: right; }
+    .post-nav .disabled {
+      color: #555;
+      cursor: not-allowed;
+    }
+
+    /* 移动端 */
+    @media (max-width: 640px) {
+      .author-avatar { width: 60px; height: 60px; }
+      .author-name { font-size: 1.5rem; }
+      .post-title { font-size: 1.8rem; }
+      .post-body { font-size: 1rem; padding: 0 15px; }
+      .post-nav { flex-direction: column; gap: 12px; }
+      .post-nav a { max-width: 100%; text-align: center; }
+    }
+
+    /* 页脚 */
+    .site-footer {
+      padding: 30px 0;
+      text-align: center;
+      color: #555;
+      font-size: 0.85rem;
+      border-top: 1px solid #222;
+    }
+    .site-footer a { color: #777; text-decoration: none; }
+    .site-footer a:hover { color: #999; }
+  </style>
+</head>
+<body>
+
+  <!-- 导航栏 -->
+<header class="site-header">
+    <div class="nav-inner">
+      <a href="index2.html" class="site-name">观山月</a>
+      <nav class="site-nav">
+        <div class="dropdown">
+          <a href="#" class="nav-icon">序章</a>
+          <ul class="dropdown-menu">
+            <li><a <li><a href="frame_lowkey.html" target="_blank">引子</a></li></a></li>
+            <li><a href="my-ai-chat/mood.html">足迹</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <a href="wenji_.html" class="nav-icon">文记</a>
+        </div>
+        <div class="dropdown">
+          <a href="tusu_.html" class="nav-icon">图诉</a>
+        </div>
+        <div class="dropdown">
+          <a href="leyin_.html" class="nav-icon">乐吟</a>
+        </div>
+      </nav>
+    </div>
+</header>
+
+  <!-- 个人头像  -->
+<section class="author-info">
+    <img src="avator.jpg" alt="作者头像" class="author-avatar" onerror="this.style.display='none'">
+    <h1 class="author-name">nayuta</h1>
+  </section>
+
+  <!-- 文章正文 -->
+  <article class="post-content">
+    <header class="post-header">
+      <h1 class="post-title">平静、有秩序地活着&nbsp;</h1>
+      <time class="post-date">2025-10-20</time>
+    </header>
+
+    <div class="post-body">
+      <p>似乎自己的生活伴随着部分人的离开而逐渐回归到正轨，不过自己看似从未偏离轨道，只是自己让自己的生活回到了一种平静而有秩序的状态。&nbsp;</p>
+
+      <p>平静、有秩序。&nbsp;</p>
+
+      <p>将自己的一切安排得井井有条，开始着手进行一直想要完成的工作，自己可以短暂放下自我存在性的证明题，温暖的灯光轻轻将我包裹，将手机倒扣，播放久违的白噪音，重新感受笔尖与纸张摩擦所带来的阻滞感，我感到满足。</p>
+		
+	  <p>耳朵因为耳机的丢失也彻底得到了解放，以前总是喜欢戴上耳机，耳朵会有闷堵，世界也会失真，于是鸟儿不再歌唱，风也不再吵闹，只剩下那些咿咿呀呀，自己与外界隔开。即使身边坐着人，我也仍旧戴着耳机，即使我知道这是不礼貌的，但还是默许耳机向他们发出警告：不要靠近我，也不要和我说话。</p>
+      
+	  <p>我想，因为今天的改变，我的生活再次有了一点点色彩，纵使窗外秋风萧瑟。</p>
+
+    </div>
+
+    <!-- 上一篇 / 下一篇 -->
+    <nav class="post-nav">
+      <a href="wenji_inner3.html" class="prev">上一篇：于是自己开始记录</a>
+     <a href="wenji_inner1.html" class="prev">下一篇：风</a></nav>
+</article>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    © 2025 观山月 · 文字、图片、音乐，皆为心影
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>镜月志</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: "Noto Serif SC", serif;
+      line-height: 2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 导航栏 */
+    .site-header {
+      height: 60px;
+      background: #000;
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      width: 90%;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .site-name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #fff;
+      text-decoration: none;
+    }
+    .site-nav {
+      display: flex;
+      gap: 30px;
+    }
+    .site-nav .nav-icon {
+      font-size: 1.1rem;
+      color: #fff;
+      text-decoration: none;
+      padding: 0 10px;
+      transition: opacity 0.2s;
+    }
+    .site-nav .nav-icon:hover { opacity: 0.7; }
+
+    /* 下拉菜单 */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #000;
+      list-style: none;
+      padding: 8px 0;
+      margin: 0;
+      min-width: 100px;
+      border: 1px solid #222;
+      border-top: none;
+      z-index: 100;
+    }
+    .dropdown-menu li a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      font-size: 0.95rem;
+    }
+    .dropdown-menu li a:hover { background: #222; }
+    .dropdown:hover .dropdown-menu { display: block; }
+
+    /* 个人头像 + 名字 */
+    .author-info {
+      padding: 80px 0 20px;
+      text-align: center;
+    }
+    .author-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1px;
+      border: 2px solid #333;
+    }
+    .author-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+	    /* 标语区域 */
+    .hero {
+      padding: 20px 0 20px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .hero-slogan {
+      font-family: "Dancing Script", cursive;
+      font-size: 3.2rem;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    /* 内容容器 */
+    .content-wrapper {
+      flex: 1;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      padding: 40px 0;
+    }
+
+    .gallery-item {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .gallery-item.large {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+    .gallery-item .item-num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+    .gallery-img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .gallery-img.large-img {
+      height: 500px; /* 大图高度 */
+    }
+    .gallery-desc {
+      font-size: 0.95rem;
+      color: #ccc;
+      line-height: 1.8;
+    }
+    .gallery-title {
+      font-size: 1.2rem;
+      color: #fff;
+      margin: 20px 0 8px;
+      letter-spacing: 1px;
+    }
+
+    /* 页码 */
+    .page-info {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 40px;
+    }
+
+    /* 页脚 */
+    .site-footer {
+      padding: 30px 0;
+      text-align: center;
+      color: #555;
+      font-size: 0.85rem;
+      border-top: 1px solid #222;
+    }
+
+    /* 响应式 */
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .gallery-item.large {
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+      .gallery-img.large-img {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 导航栏 -->
+<header class="site-header">
+    <div class="nav-inner">
+      <a href="index2.html" class="site-name">观山月</a>
+      <nav class="site-nav">
+        <div class="dropdown">
+          <a href="#" class="nav-icon">序章</a>
+          <ul class="dropdown-menu">
+            <li><a <li><a href="frame_lowkey.html" target="_blank">引子</a></li></a></li>
+            <li><a href="my-ai-chat/mood.html">足迹</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <a href="wenji_.html" class="nav-icon">砚山集</a>
+        </div>
+        <div class="dropdown">
+          <a href="tusu_.html" class="nav-icon">镜月志</a>
+        </div>
+        <div class="dropdown">
+          <a href="leyin_.html" class="nav-icon">松风谱</a>
+        </div>
+      </nav>
+    </div>
+</header>
+
+  <!-- 个人头像 + 名字 -->
+  
+<section class="hero">
+  <div class="hero-slogan">我是猫。</div>
+  </section>
+<!-- 内容 -->
+  <div class="content-wrapper">
+    <div class="gallery-grid">
+      <!-- #01 大图 -->
+      <div class="gallery-item large">
+        <div class="item-num"># 01</div>
+        <img src="5.jpg" alt="大图1" class="gallery-img large-img" onerror="this.src='https://via.placeholder.com/600x500?text=图01'">
+        <div class="gallery-title">我叫米娅。</div>
+        <div class="gallery-desc">
+          <p> 每天最幸福的事，就是蹲在猫窝门口，看阳光一寸寸爬上我的鼻尖，像极了山间云雾慢慢爬过峰顶。&nbsp;</p>
+          <p>&nbsp;</p>
+<p>我不懂什么“观山月”，但我知道：&nbsp;</p>
+          <p>当月亮照进窗台，我会轻轻踱步，把影子铺成一条通往银河的小路。&nbsp;</p>
+          <p>&nbsp;</p>
+<p>有人说我总在发呆，</p>
+          <p>其实我只是在等风来，等它告诉我今晚要不要穿红毛衣出门。&nbsp;</p>
+          <p>有人问我为什么总盯着零食袋，</p>
+          <p>那是因为——</p>
+          <p>&nbsp;<strong>人类的快乐，藏在薯片脆响里；而我的快乐，藏在你低头看我的那一秒。</strong></p>
+          <p>&nbsp;</p>
+<p>我不会写诗，但我用尾巴摇出节奏，用呼噜声哼出夜曲。</p>
+          <p>&nbsp;我也不懂艺术，可我懂得：</p>
+          <p>&nbsp;<strong>最美的风景，不是远山明月，而是你回家时，我正蜷在灯下等你。&nbsp;</strong></p>
+          <p>&nbsp;</p>
+<p>所以啊，别急着赶路。&nbsp;</p>
+          <p>偶尔停下，看看猫窝里的小世界，&nbsp;</p>
+          <p>也许，我们都在彼此眼中，看见了完整的月亮。</p>
+<p>&nbsp;</p>
+          <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;——米娅 敬上&nbsp;</p>
+        </div>
+      </div>
+
+      <!-- #02 小图 -->
+      <div class="gallery-item">
+        <div class="item-num"># 02</div>
+        <img src="6.jpg" alt="图2" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=图02'">
+        <div class="gallery-title">关于美食&nbsp;</div>
+        <div class="gallery-desc">
+          <p>鸡胸肉要撕成一丝一丝的，才配得上我高贵的咀嚼仪式。&nbsp;</p>
+          <p>面包？可以吃，但必须是爸爸手里的那一小块——&nbsp;</p>
+          <p>因为他的掌心有太阳的味道，咬下去，连酵母都在发光。&nbsp;</p>
+        </div>
+      </div>
+
+      <!-- #03 小图 -->
+      <div class="gallery-item">
+        <div class="item-num"># 03</div>
+        <img src="7.jpg" alt="图3" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=图03'">
+        <div class="gallery-title">P.S. 红毛衣是冬天限定款，不对外出租，谢绝拍照&nbsp;</div>
+        <div class="gallery-desc">&nbsp;</div>
+      </div>
+
+      <!-- #04 小图 -->
+      <div class="gallery-item">
+        <div class="item-num"># 04</div>
+        <img src="8.jpg" alt="图4" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=图04'">
+        <div class="gallery-desc">
+          <p>我不吃鱼，不追激光笔，也不屑于抓沙发。&nbsp;</p>
+          <p>我只认准两样东西： 爸爸的手，和他手里的鸡胸肉。&nbsp;</p>
+        </div>
+      </div>
+
+      <!-- #05 小图 -->
+      <div class="gallery-item">
+        <div class="item-num"># 05</div>
+        <img src="9.jpg" alt="图5" class="gallery-img" onerror="this.src='https://via.placeholder.com/300?text=图05'">
+        <div class="gallery-title">关于爸爸&nbsp;</div>
+        <div class="gallery-desc">
+          <p> 他总说我是他的小月亮，可我知道，他才是我的整座山。&nbsp;</p>
+          <p>下雨天他撑伞，打雷时他捂耳，连我打翻水碗，他都说：“米娅是在画地图呢。”</p>
+          <p>&nbsp;<strong>——哼，这人类，宠我宠得毫无原则。</strong>&nbsp;</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-info">&nbsp;</div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    © 2025 观山月 · 文字、图片、音乐，皆为心影
+  </footer>
+
+</body>
+</html>

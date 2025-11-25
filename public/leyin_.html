@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>松风谱</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: "Noto Serif SC", serif;
+      line-height: 2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 导航栏 */
+    .site-header {
+      height: 60px;
+      background: #000;
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      width: 90%;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .site-name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #fff;
+      text-decoration: none;
+    }
+    .site-nav {
+      display: flex;
+      gap: 30px;
+    }
+    .site-nav .nav-icon {
+      font-size: 1.1rem;
+      color: #fff;
+      text-decoration: none;
+      padding: 0 10px;
+      transition: opacity 0.2s;
+    }
+    .site-nav .nav-icon:hover { opacity: 0.7; }
+
+    /* 下拉菜单 */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #000;
+      list-style: none;
+      padding: 8px 0;
+      margin: 0;
+      min-width: 100px;
+      border: 1px solid #222;
+      border-top: none;
+      z-index: 100;
+    }
+    .dropdown-menu li a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      font-size: 0.95rem;
+    }
+    .dropdown-menu li a:hover { background: #222; }
+    .dropdown:hover .dropdown-menu { display: block; }
+
+    /* 个人头像 + 名字 */
+    .author-info {
+      padding: 80px 0 40px;
+      text-align: center;
+    }
+    .author-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1px;
+      border: 2px solid #333;
+    }
+    .author-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    /* 内容容器 */
+    .content-wrapper {
+      flex: 1;
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+    }
+
+    /* 标题 + 搜索栏 */
+    .page-header {
+      text-align: center;
+      margin: 40px 0 30px;
+    }
+    .page-title {
+      font-size: 1.8rem;
+      color: #fff;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+    }
+    .search-box {
+      max-width: 400px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      padding: 12px 40px 12px 16px;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+      font-family: "Noto Serif SC", serif;
+    }
+    .search-input::placeholder {
+      color: #666;
+    }
+    .search-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+      font-size: 1.2rem;
+      pointer-events: none;
+    }
+
+    /* 专辑网格：每行5个 */
+    .albums-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      padding: 20px 0;
+    }
+.album-card {
+  text-align: center;
+  transition: transform 0.3s;
+  display: block;
+  text-decoration: none;    
+}
+.album-card:hover {
+  transform: translateY(-8px);
+  text-decoration: none;     
+}
+.album-card.hidden {
+  display: none;
+}
+
+    .album-cover {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      object-fit: cover;
+      border: 1px solid #333;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      margin-bottom: 12px;
+    }
+
+    .album-title {
+      font-size: 0.95rem;
+      color: #fff;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .album-artist {
+      font-size: 0.8rem;
+      color: #999;
+    }
+
+    /* 页脚 */
+    .site-footer {
+      padding: 30px 0;
+      text-align: center;
+      color: #555;
+      font-size: 0.85rem;
+      border-top: 1px solid #222;
+    }
+
+    /* 响应式 */
+    @media (max-width: 1024px) {
+      .albums-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .albums-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+      .page-title { font-size: 1.5rem; }
+    }
+    @media (max-width: 480px) {
+      .albums-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 导航栏 -->
+<header class="site-header">
+    <div class="nav-inner">
+      <a href="index2.html" class="site-name">观山月</a>
+      <nav class="site-nav">
+        <div class="dropdown">
+          <a href="index2.html" class="nav-icon">序章</a>
+          <ul class="dropdown-menu">
+            <li><a <li><a href="frame_lowkey.html" target="_blank">引子</a></li></a></li>
+            <li><a href="my-ai-chat/mood.html">足迹</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <a href="wenji_.html" class="nav-icon">砚山集</a>
+        </div>
+        <div class="dropdown">
+          <a href="tusu_.html" class="nav-icon">镜月志</a>
+        </div>
+        <div class="dropdown">
+          <a href="leyin_.html" class="nav-icon">松风谱</a>
+        </div>
+      </nav>
+    </div>
+</header>
+  
+  <!-- 个人头像 -->
+  <section class="author-info">
+    <img src="avator.jpg" alt="作者头像" class="author-avatar" onerror="this.style.display='none'">
+    <h1 class="author-name">nayuta</h1>
+  </section>
+
+  <!-- 内容 -->
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h2 class="page-title">松间听月，风里成歌。</h2>
+      <div class="search-box">
+        <input type="text" class="search-input" placeholder="搜索歌名或歌手…" id="searchInput">
+        <span class="search-icon">Search</span>
+      </div>
+    </div>
+
+    <div class="albums-grid" id="albumsGrid">
+      <a href="leyin_inner1.html" class="album-card" data-title="山春" data-artist="陈嘉俊是这个嘉">
+        <img src="10.jpg" alt="山春" class="album-cover" onerror="this.src='https://via.placeholder.com/180?text=山春'">
+        <div class="album-title">山春</div>
+        <div class="album-artist">陈嘉俊是这个嘉</div>
+      </a>
+
+      <a href="leyin_inner2.html" class="album-card" data-title="海鸥不回来" data-artist="Hogee">
+        <img src="11.jpg" alt="海鸥不回来" class="album-cover" onerror="this.src='https://via.placeholder.com/180?text=海鸥不回来'">
+        <div class="album-title">海鸥不回来</div>
+        <div class="album-artist">Hogee</div>
+      </a>
+
+      <a href="leyin-03.html" class="album-card" data-title="铁梳吟" data-artist="鲜克">
+        <img src="12.jpg" alt="铁梳吟" class="album-cover" onerror="this.src='https://via.placeholder.com/180?text=铁梳吟'">
+        <div class="album-title">铁梳吟</div>
+        <div class="album-artist">鲜克</div>
+      </a>
+
+      <a href="leyin-04.html" class="album-card" data-title="陈江河·苏江水" data-artist="南青乐队">
+        <img src="13.jpg" alt="陈江河·苏江水" class="album-cover" onerror="this.src='https://via.placeholder.com/180?text=陈江河·苏江水'">
+        <div class="album-title">陈江河·苏江水</div>
+        <div class="album-artist">南青乐队</div>
+      </a>
+
+      <a href="14.html" class="album-card" data-title="一生所爱2020" data-artist="庆庆">
+        <img src="14.jpg" alt="一生所爱2020" class="album-cover" onerror="this.src='https://via.placeholder.com/180?text=一生所爱2020'">
+        <div class="album-title">一生所爱2020</div>
+        <div class="album-artist">庆庆</div>
+      </a>
+
+      <a href="15.html" class="album-card" data-title="小问题" data-artist="AGA">
+        <img src="15.jpg" alt="小问题" class="album-cover" onerror="this.src='https://via.placeholder.com/180?text=小问题'">
+        <div class="album-title">小问题</div>
+        <div class="album-artist">AGA</div>
+      </a>
+
+      <a href="leyin-07.html" class="album-card" data-title="潮疑" data-artist="弱水">
+        <img src="16.jpg" alt="潮疑" class="album-cover" onerror="this.src='https://via.placeholder.com/180?text=潮疑'">
+        <div class="album-title">潮疑</div>
+        <div class="album-artist">弱水</div>
+      </a>
+
+      <a href="leyin-08.html" class="album-card" data-title="环游失眠" data-artist="AVA">
+        <img src="17.jpg" alt="环游失眠" class="album-cover" onerror="this.src='https://via.placeholder.com/180?text=环游失眠'">
+        <div class="album-title">环游失眠</div>
+        <div class="album-artist">AVA</div>
+      </a>
+
+      <a href="leyin-09.html" class="album-card" data-title="小鸠" data-artist="浅水">
+        <img src="18.jpg" alt="小鸠" class="album-cover" onerror="this.src='https://via.placeholder.com/180?text=小鸠'">
+        <div class="album-title">小鸠</div>
+        <div class="album-artist">浅水</div>
+      </a>
+
+      <a href="leyin-10.html" class="album-card" data-title="逃亡" data-artist="孙燕姿">
+        <img src="19.jpg" alt="逃亡" class="album-cover" onerror="this.src='https://via.placeholder.com/180?text=逃亡'">
+        <div class="album-title">逃亡</div>
+        <div class="album-artist">孙燕姿</div>
+      </a>
+
+      <a href="leyin-11.html" class="album-card" data-title="Late Man" data-artist="沉默演讲">
+        <img src="20.jpg" alt="Late Man" class="album-cover" onerror="this.src='https://via.placeholder.com/180?text=Late Man'">
+        <div class="album-title">Late Man</div>
+        <div class="album-artist">沉默演讲</div>
+      </a>
+
+      <a href="leyin-12.html" class="album-card" data-title="鸡鸣寺" data-artist="浅水">
+        <img src="21.jpg" alt="鸡鸣寺" class="album-cover" onerror="this.src='https://via.placeholder.com/180?text=鸡鸣寺'">
+        <div class="album-title">鸡鸣寺</div>
+        <div class="album-artist">浅水</div>
+      </a>
+
+      
+    </div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    © 2025 观山月 · 文字、图片、音乐，皆为心影
+  </footer>
+
+  <!-- 搜索脚本 -->
+  <script>
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      const query = e.target.value.trim().toLowerCase();
+      const cards = document.querySelectorAll('.album-card');
+
+      cards.forEach(card => {
+        const title = card.dataset.title.toLowerCase();
+        const artist = card.dataset.artist.toLowerCase();
+        if (title.includes(query) || artist.includes(query)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

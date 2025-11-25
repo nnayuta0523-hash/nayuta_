@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>风 · 观山月</title>
+
+  <!-- 字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: "Noto Serif SC", serif;
+      line-height: 2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 导航栏 */
+    .site-header {
+      height: 60px;
+      background: #000;
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      width: 90%;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .site-name {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #fff;
+      text-decoration: none;
+    }
+    .site-nav {
+      display: flex;
+      gap: 30px;
+    }
+    .site-nav .nav-icon {
+      font-size: 1.1rem;
+      color: #fff;
+      text-decoration: none;
+      padding: 0 10px;
+      transition: opacity 0.2s;
+    }
+    .site-nav .nav-icon:hover { opacity: 0.7; }
+
+    /* 下拉菜单 */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #000;
+      list-style: none;
+      padding: 8px 0;
+      margin: 0;
+      min-width: 100px;
+      border: 1px solid #222;
+      border-top: none;
+      z-index: 100;
+    }
+    .dropdown-menu li a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+    .dropdown-menu li a:hover { background: #222; }
+    .dropdown:hover .dropdown-menu { display: block; }
+
+    /* 个人头像 + 名字区域 */
+    .author-info {
+      padding: 80px 0 40px;
+      text-align: center;
+    }
+    .author-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1px;
+      border: 2px solid #333;
+    }
+    .author-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    /* 文章内容 */
+    .post-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px 60px;
+      max-width: 800px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .post-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .post-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    .post-date {
+      font-size: 1rem;
+      color: #aaa;
+      letter-spacing: 1.5px;
+    }
+    .post-body {
+      font-size: 1.1rem;
+      color: #ddd;
+      text-align: left;
+      line-height: 2.2;
+      width: 100%;
+    }
+    .post-body p {
+      margin-bottom: 1.8rem;
+    }
+    .post-body img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 2rem 0;
+      display: block;
+    }
+    .post-body audio {
+      width: 100%;
+      margin: 2rem 0;
+      filter: invert(1);
+    }
+    .post-body blockquote {
+      border-left: 3px solid #444;
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+      color: #bbb;
+      font-style: italic;
+    }
+
+    /* 上一篇 / 下一篇 */
+    .post-nav {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px solid #333;
+      width: 100%;
+      font-size: 1rem;
+    }
+    .post-nav a {
+      color: #999;
+      text-decoration: none;
+      max-width: 45%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .post-nav a:hover {
+      color: #fff;
+    }
+    .post-nav .prev { text-align: left; }
+    .post-nav .next { text-align: right; }
+    .post-nav .disabled {
+      color: #555;
+      cursor: not-allowed;
+    }
+
+    /* 移动端 */
+    @media (max-width: 640px) {
+      .author-avatar { width: 60px; height: 60px; }
+      .author-name { font-size: 1.5rem; }
+      .post-title { font-size: 1.8rem; }
+      .post-body { font-size: 1rem; padding: 0 15px; }
+      .post-nav { flex-direction: column; gap: 12px; }
+      .post-nav a { max-width: 100%; text-align: center; }
+    }
+
+    /* 页脚 */
+    .site-footer {
+      padding: 30px 0;
+      text-align: center;
+      color: #555;
+      font-size: 0.85rem;
+      border-top: 1px solid #222;
+    }
+    .site-footer a { color: #777; text-decoration: none; }
+    .site-footer a:hover { color: #999; }
+  </style>
+</head>
+<body>
+
+  <!-- 导航栏 -->
+<header class="site-header">
+    <div class="nav-inner">
+      <a href="index2.html" class="site-name">观山月</a>
+      <nav class="site-nav">
+        <div class="dropdown">
+          <a href="#" class="nav-icon">序章</a>
+          <ul class="dropdown-menu">
+            <li><a <li><a href="frame_lowkey.html" target="_blank">引子</a></li></a></li>
+            <li><a href="my-ai-chat/mood.html">足迹</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <a href="wenji_.html" class="nav-icon">砚山集</a>
+        </div>
+        <div class="dropdown">
+          <a href="tusu_.html" class="nav-icon">镜月志</a>
+        </div>
+        <div class="dropdown">
+          <a href="leyin_.html" class="nav-icon">松风谱</a>
+        </div>
+      </nav>
+    </div>
+</header>
+
+  <!-- 个人头像  -->
+  <section class="author-info">
+    <img src="avator.jpg" alt="作者头像" class="author-avatar" onerror="this.style.display='none'">
+    <h1 class="author-name">nayuta</h1>
+  </section>
+
+  <!-- 文章正文 -->
+  <article class="post-content">
+    <header class="post-header">
+      <h1 class="post-title">风&nbsp;</h1>
+      <time class="post-date">2025-10-22</time>
+    </header>
+
+    <div class="post-body">
+      <p>成都的阴冷总会让我想起高中，我坐在最后一排看向窗外阴沉的天，同样的风，因蒙古-西伯利亚高压形成，翻过秦岭山脉，一路南下，吹向我。&nbsp;</p>
+
+      <p>桌面上解不开的数学题，叠着我的kindle，上面写着最后一代奥雷里亚诺再也无法走出那间房屋，飓风将马孔多从人们的记忆里彻底抹掉。目光收回，视线落到黑板上，假意附和台上的老师，坐南朝北的诡异设计使风倒灌进整个教室，吹起了所有人的习题册，有别于书中羊皮卷的沙沙声，浸满笔墨的轻型纸过于清脆，泛起一阵骚动。&nbsp;</p>
+	<p>寒风将柯西不等式从学生的记忆里彻底抹掉，所以在座的人依然没有解出这道题。&nbsp;</p>
+
+      <p>“把窗关上！”我抬起手，借势往后重重一拉。</p>
+		
+		<p>窗扇砸向窗框，又往前弹了小小一段距离，留下小小的一道缝。</p>
+<p>胃因为一时的口欲之欢而在此刻感到倒海翻江，青苹果汁、提拉米苏与胃酸似乎在进行着激烈的化学反应，突破甜味禁忌的我，开始接受皮肤发痒的惩戒，留在盒子里的芝士糊像是一滩呕吐物，赶忙丢进一侧的垃圾桶，努力压制自下而上涌上来的恶心。</p>
+<p>一天27粒药丸，吃完西药喝中药，内服结束是外用，以及没有尽头的忌口清单，朋友打趣我是“不适合在地球生活的三体人，所以一年四季都在生病”，我笑着回道，“对呀，要不是为了毁灭地球，我才不会来这里呢”。</p>
+		<p>房间里的空调努力吹着热风，吹得我有些晕乎乎的，于是我走到窗边，打开一点。</p>
+<p>此刻，风吹向我，越过低矮的龙泉山脉吹向我。</p>
+
+
+    </div>
+
+    <!-- 上一篇 / 下一篇 -->
+    <nav class="post-nav">
+      <a href="wenji_inner2.html" class="prev">上一篇：平静、有秩序地活着</a>
+      <a href="wenji_.html" class="next">下一篇：返回目录</a>
+    </nav>
+</article>
+
+  <!-- 页脚 -->
+  <footer class="site-footer">
+    © 2025 观山月 · 文字、图片、音乐，皆为心影
+</footer>
+
+</body>
+</html>

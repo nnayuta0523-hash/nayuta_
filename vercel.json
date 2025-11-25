@@ -1,15 +1,12 @@
 {
-  "public": "public",
-  "rewrites": [
-    {
-      "source": "/my-ai-chat/(.*)",
-      "destination": "/api/my-ai-chat"
-    }
+  "version": 2,
+  "public": true,
+  "builds": [
+    { "src": "index.js", "use": "@vercel/node" },
+    { "src": "api/**/*.js", "use": "@vercel/node" }
   ],
-  "functions": {
-    "api/my-ai-chat/index.js": {
-      "memory": 2048,
-      "maxDuration": 30
-    }
-  }
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/(.*)", "dest": "/index.js" }
+  ]
 }

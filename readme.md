@@ -10,11 +10,11 @@
 
 ## 网站预览
 
-![首页](./screenshot/index.png)
-![松风谱-黑胶唱片页](./screenshot/leyin.png)
-![砚山集-文章详情](./screenshot/wenji.png)
-![镜月志-猫咪专栏](./screenshot/tusu.png)
-![足迹-ai大模型](./screenshot/zuji.png)
+![首页](./public/screenshot/index.png)
+![松风谱-黑胶唱片页](./public/screenshot/leyin.png)
+![砚山集-文章详情](./public/screenshot/wenji.png)
+![镜月志-猫咪专栏](./public/screenshot/tusu.png)
+![足迹-ai大模型](./public/screenshot/zuji.png)
 
 > （若图片未能正常显示，请打开子文件夹screenshots进行查看）
 
@@ -30,9 +30,9 @@
     - `leyin_.html` — 松风谱（音乐墙 / 专辑展示）
     - `frame_lowkey.html` — 框架演示页
     - `screenshots` -（演示截图）
-    - my-chat-ai
-     - node_modules
-     - `mood.html` -足迹（基于个人数据的ai大模型对话）
+    - `my-chat-ai`
+      - `node_modules`
+      - `mood.html` -足迹（基于个人数据的ai大模型对话）
 
 - api/（vercel托管页面）
    - my-chat-ai（Vercel Serverless Function）

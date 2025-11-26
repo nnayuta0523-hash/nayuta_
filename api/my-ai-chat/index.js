@@ -120,3 +120,14 @@ app.post('/v1/chat/completions', async (req, res) => {
 });
 
 module.exports = app;
+
+const port = process.env.PORT || 3000;
+
+module.exports = app;
+
+if (!process.env.VERCEL) {
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`观山月服务器已启动：http://localhost:${port}`);
+    console.log(`线上地址：https://nayuta-delta.vercel.app`);
+  });
+}

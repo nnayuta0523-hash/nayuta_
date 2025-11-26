@@ -1,14 +1,15 @@
 {
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.js"
-    }
-  ],
   "functions": {
-    "index.js": {
+    "api/my-ai-chat/index.js": {
       "memory": 3008,
       "maxDuration": 60
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/my-ai-chat",
+      "destination": "/api/my-ai-chat/index.js"
+    }
+  ]
 }
+
